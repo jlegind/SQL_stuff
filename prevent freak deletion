@@ -1,0 +1,16 @@
+In most SQL databases (PostgreSQL, MySQL, SQL Server, etc.), you can group operations into a transaction. This is to prevent accidental mass deletion - 
+it turns out there can be outliers where the "WHERE" clause is dropped. 
+Source: https://medium.com/@irinelcristea/the-day-i-deleted-1m-rows-in-production-and-how-sql-saved-me-ab530df09fc1
+
+BEGIN;
+
+DELETE FROM users WHERE active = false;
+
+-- Then check:
+SELECT COUNT(*) FROM users;
+
+-- Only if you’re sure:
+COMMIT;
+
+-- Or cancel:
+ROLLBACK;
